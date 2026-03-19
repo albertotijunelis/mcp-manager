@@ -61,6 +61,7 @@ brews:
     repository:
       owner: albertotijunelis
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     directory: Formula
     homepage: "https://github.com/albertotijunelis/mcp-manager"
     description: "The package manager for MCP servers — like Homebrew for your AI toolchain"
