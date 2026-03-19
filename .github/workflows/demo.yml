@@ -28,7 +28,8 @@ jobs:
 
       - name: Install VHS
         run: |
-          curl -fsSL https://github.com/charmbracelet/vhs/releases/latest/download/vhs_Linux_x86_64.tar.gz | sudo tar xz -C /usr/local/bin vhs
+          VHS_VERSION=$(curl -fsSL https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r .tag_name)
+          curl -fsSL "https://github.com/charmbracelet/vhs/releases/download/${VHS_VERSION}/vhs_${VHS_VERSION#v}_Linux_x86_64.tar.gz" | sudo tar xz -C /usr/local/bin vhs
 
       - name: Generate GIF
         run: vhs demo.tape
