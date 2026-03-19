@@ -21,15 +21,14 @@ jobs:
       - name: Build mcp binary
         run: go build -o /usr/local/bin/mcp .
 
-      - name: Install VHS
-        uses: charmbracelet/vhs-action@v2
-        with:
-          install-only: true
-
-      - name: Install ttyd
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ttyd
+          sudo apt-get install -y ffmpeg ttyd
+
+      - name: Install VHS
+        run: |
+          curl -fsSL https://github.com/charmbracelet/vhs/releases/latest/download/vhs_Linux_x86_64.tar.gz | sudo tar xz -C /usr/local/bin vhs
 
       - name: Generate GIF
         run: vhs demo.tape
