@@ -1,0 +1,75 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    exclude:
+      - goos: windows
+        goarch: arm64
+    binary: mcp
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+      - registry/registry.json
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  groups:
+    - title: "Features"
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug fixes"
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: "Chores"
+      regexp: '^.*?chore(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: "Others"
+      order: 999
+
+brews:
+  - name: mcp-manager
+    repository:
+      owner: albertotijunelis
+      name: homebrew-tap
+    directory: Formula
+    homepage: "https://github.com/albertotijunelis/mcp-manager"
+    description: "The package manager for MCP servers — like Homebrew for your AI toolchain"
+    license: "MIT"
+    test: |
+      system "#{bin}/mcp", "version"
+    install: |
+      bin.install "mcp"
+
+release:
+  prerelease: auto
+  name_template: "v{{.Version}}"
