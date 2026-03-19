@@ -22,6 +22,12 @@
 
 ---
 
+<p align="center">
+  <img src="demo.gif" alt="mcp-manager demo" width="800">
+</p>
+
+---
+
 ## What is this?
 
 The **Model Context Protocol (MCP)** is an open standard for connecting AI models to external tools and data sources. GitHub Copilot, Claude Code, Cursor, and Windsurf all support MCP servers — but there's no easy way to discover, install, and manage them.

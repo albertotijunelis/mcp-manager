@@ -10,7 +10,7 @@ Set Height 600
 Set Theme "Catppuccin Mocha"
 Set Padding 20
 
-Type "mcp doctor"
+Type "mcp version"
 Enter
 Sleep 2s
 
@@ -18,13 +18,10 @@ Type "mcp search database"
 Enter
 Sleep 2s
 
-Type "mcp install sqlite"
-Enter
-Sleep 1s
-Type "y"
-Enter
-Sleep 3s
-
-Type "mcp list"
+Type "mcp info sqlite"
 Enter
 Sleep 2s
+
+Type "mcp doctor"
+Enter
+Sleep 3s
