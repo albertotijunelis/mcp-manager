@@ -1,0 +1,42 @@
+name: Generate Demo GIF
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Build mcp binary
+        run: go build -o /usr/local/bin/mcp .
+
+      - name: Install VHS
+        uses: charmbracelet/vhs-action@v2
+        with:
+          install-only: true
+
+      - name: Install ttyd
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ttyd
+
+      - name: Generate GIF
+        run: vhs demo.tape
+
+      - name: Commit and push GIF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add demo.gif
+          git diff --cached --quiet || (git commit -m "docs: generate demo.gif [skip ci]" && git push)
